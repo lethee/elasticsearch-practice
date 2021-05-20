@@ -8,6 +8,13 @@ To start:
 docker-compose up -d
 ```
 
+To test:
+
+```bash
+npm i
+node cluster-test.js
+```
+
 To delete:
 
 ```bash
