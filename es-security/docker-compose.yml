@@ -1,0 +1,31 @@
+# elastic-search
+# nodes:
+#   es-node-1
+#   kibana-1
+version: '2.2'
+services:
+  es-node-1:
+    image: elasticsearch:7.12.1
+    hostname: es-node-1
+    #cpus: 0.5 # requires version 2.2
+    environment:
+      - node.name=es-node-1
+      - cluster.name=${MY_ES_CLUSTER_NAME}
+      # - discovery.seed_hosts=es-node-2
+      - cluster.initial_master_nodes=es-node-1
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+    volumes:
+      - ./es-node-1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+  kibana-1:
+    depends_on:
+      - es-node-1
+    image: kibana:7.12.1
+    cpus: 0.5 # requires version 2.2
+    ports:
+      - 5601:5601
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
